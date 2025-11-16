@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rotating Sandwich Launcher</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #111;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      flex-direction: column;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #ff4444;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #cc0000;
+    }
+    #countdown {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <button id="launchBtn">Launch Sandwiches</button>
+  <div id="countdown"></div>
+
+  <script>
+    const btn = document.getElementById("launchBtn");
+    const countdownDisplay = document.getElementById("countdown");
+
+    btn.addEventListener("click", () => {
+      let delay = 5000; // initial 5 seconds
+      startCycle(delay);
+    });
+
+    function startCycle(delay) {
+      let remaining = delay / 1000;
+
+      // Show countdown
+      countdownDisplay.textContent = `Countdown: ${remaining.toFixed(1)}s`;
+      const interval = setInterval(() => {
+        remaining--;
+        countdownDisplay.textContent = `Countdown: ${Math.max(remaining,0)}s`;
+        if (remaining <= 0) {
+          clearInterval(interval);
+        }
+      }, 1000);
+
+      // After delay, open window and repeat
+      setTimeout(() => {
+        openRandomWindow();
+        // halve the delay, but keep a minimum of 1 millisecond
+        let nextDelay = Math.max(Math.floor(delay / 2), 1);
+        startCycle(nextDelay);
+      }, delay);
+    }
+
+    function openRandomWindow() {
+      const width = Math.floor(Math.random() * 600) + 200; // 200–800px
+      const height = Math.floor(Math.random() * 400) + 200; // 200–600px
+      const left = Math.floor(Math.random() * (screen.width - width));
+      const top = Math.floor(Math.random() * (screen.height - height));
+
+      window.open(
+        "https://rotatingsandwiches.com",
+        "_blank",
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+    }
+  </script>
+</body>
+</html>
